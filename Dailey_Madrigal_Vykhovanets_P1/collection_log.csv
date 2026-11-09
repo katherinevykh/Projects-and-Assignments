@@ -1,0 +1,9 @@
+run_time,mode,snapshots_read,urls_fetched,urls_new,note
+2026-09-11T18:07:22Z,history,204,61197,49915,since=2026-06-01
+2026-09-11T18:08:29Z,live,1,300,0,https://raw.githubusercontent.com/openphish/public_feed/main/feed.txt
+2026-09-14T03:00:58Z,live,1,300,274,https://raw.githubusercontent.com/openphish/public_feed/main/feed.txt
+2026-09-14T17:11:19Z,live,1,300,164,https://raw.githubusercontent.com/openphish/public_feed/main/feed.txt
+2026-09-14T17:12:15Z,live,1,300,0,https://raw.githubusercontent.com/openphish/public_feed/main/feed.txt
+2026-09-15T15:15:10Z,live,1,300,289,https://raw.githubusercontent.com/openphish/public_feed/main/feed.txt
+2026-09-16T18:14:54Z,live,1,300,282,https://raw.githubusercontent.com/openphish/public_feed/main/feed.txt
+2026-09-18T16:38:10Z,live,1,300,285,https://raw.githubusercontent.com/openphish/public_feed/main/feed.txt
