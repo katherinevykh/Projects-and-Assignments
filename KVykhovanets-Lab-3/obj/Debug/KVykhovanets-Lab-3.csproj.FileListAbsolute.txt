@@ -1,0 +1,14 @@
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\bin\Debug\StateInfoDB.mdf
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\bin\Debug\StateInfoDB_log.ldf
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\bin\Debug\KVykhovanets-Lab-3.exe.config
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\bin\Debug\KVykhovanets-Lab-3.exe
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\bin\Debug\KVykhovanets-Lab-3.pdb
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\obj\Debug\KVykhovanets-Lab-3.csproj.AssemblyReference.cache
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\obj\Debug\KVykhovanets_Lab_3.EmployeeDatabase.resources
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\obj\Debug\KVykhovanets_Lab_3.Properties.Resources.resources
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\obj\Debug\KVykhovanets_Lab_3.StateDetails.resources
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\obj\Debug\KVykhovanets-Lab-3.csproj.GenerateResource.cache
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\obj\Debug\KVykhovanets-Lab-3.csproj.CoreCompileInputs.cache
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\obj\Debug\KVykhovanets-Lab-3.exe
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\obj\Debug\KVykhovanets-Lab-3.pdb
+C:\Users\kathe\source\repos\KVykhovanets-Lab-3\obj\Debug\KVykhovanets-Lab-3.exe.config
