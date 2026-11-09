@@ -1,0 +1,331 @@
+﻿@model ResourceRequest
+@{
+    ViewData["Title"] = "Request Form";
+}
+
+<head>
+    <style>
+        .btn-custom-blue {
+            background-color: #242c5c;
+            border-color: #242c5c;
+            color: white;
+        }
+
+            .btn-custom-blue:hover {
+                background-color: #349444;
+                border-color: #349444;
+                color: white;
+            }
+    </style>
+</head>
+
+<div class="d-flex align-items-center">
+    <img src="/Images/logo.png" class="img-thumbnail d-inline me-4" alt="Chaser Logo" style="max-width: 300px" />
+</div>
+
+<h1 class="text-end">REQUEST<span class="text-success">   FORM</span></h1>
+<h2 class="mb-4">Please provide the following information:</h2>
+
+<form method="post">
+
+    @*
+    <div class="row mb-4">
+        <label for="date" class="col-sm-2 col-form-label">Date</label>
+        <div class="col-sm-10">
+            <input asp-for="Date" class="form-control">
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+    </div>
+    *@
+
+    <div class="row mb-4">
+        <label for="studentID" class="col-sm-2 col-form-label">SCC Student ID</label>
+        <div class="col-sm-10">
+            <input asp-for="UserID" class="form-control" minLength="7" maxlength="7" >
+            <span asp-validation-for="UserID" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <label for="householdSize" class="col-sm-2 col-form-label">Household Size:</label>
+        <label for="adultNumber" class="col-sm-1 col-form-label text-end">Adult</label>
+        <div class="col-sm-2">
+            <input asp-for="HouseholdAdults" class="form-control" id="adultNumber">
+            <span asp-validation-for="HouseholdAdults" class="text-danger"></span>
+        </div>
+        <label for="childNumber" class="col-sm-2 col-form-label text-end">Child(0-18)</label>
+        <div class="col-sm-2">
+            <input asp-for="HouseholdUnderage" class="form-control" id="childNumber">
+            <span asp-validation-for="HouseholdUnderage" class="text-danger"></span>
+        </div>
+    </div>
+
+    <h3>I have access to: (check all that apply)</h3>
+    <div class="row mb-4">
+        <div class="col-sm-12 d-flex justify-content-between">
+            <div class="form-check">
+                <input class="form-check-input" asp-for="Stove" >
+                <label class="form-check-label" asp-for="Stove"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="Oven">
+                <label class="form-check-label" asp-for="Oven"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="Microwave">
+                <label class="form-check-label" asp-for="Microwave"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CanOpener">
+                <label class="form-check-label" asp-for="CanOpener"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="RunningWater">
+                <label class="form-check-label" asp-for="RunningWater"></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <label for="dietaryRestrictions" class="col-sm-2 col-form-label">Dietary Restrictions</label>
+        <div class="col-sm-10">
+            <input asp-for="DietaryRestrictions" class="form-control">
+            <span asp-validation-for="DietaryRestrictions" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <label for="allergies" class="col-sm-2 col-form-label">Allergies</label>
+        <div class="col-sm-10">
+            <input asp-for="Allergies" class="form-control">
+            <span asp-validation-for="Allergies" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <p><span style="font-weight: bold; font-size: 20px;">Please check which of the following items you will use.</span> Some items may not be available.</p>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <h3>Soup</h3>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="SoupChili">
+                <label class="form-check-label" asp-for="SoupChili"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="SoupChicken">
+                <label class="form-check-label" asp-for="SoupChicken"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="SoupTomato">
+                <label class="form-check-label" asp-for="SoupTomato"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="SoupCream">
+                <label class="form-check-label" asp-for="SoupCream"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="SoupVegetable">
+                <label class="form-check-label" asp-for="SoupVegetable"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="SoupOther">
+                <label class="form-check-label" asp-for="SoupOther"></label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Canned Vegetables</h3>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CanVegetableMix">
+                <label class="form-check-label" asp-for="CanVegetableMix"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CanVegetablePeas">
+                <label class="form-check-label" asp-for="CanVegetablePeas"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CanVegetableGreenBean">
+                <label class="form-check-label" asp-for="CanVegetableGreenBean"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CanVegetableCorn">
+                <label class="form-check-label" asp-for="CanVegetableCorn"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CanVegetableTomato">
+                <label class="form-check-label" asp-for="CanVegetableTomato"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CanVegetableCarrot">
+                <label class="form-check-label" asp-for="CanVegetableCarrot"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CanVegetableOther">
+                <label class="form-check-label" asp-for="CanVegetableOther"></label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Snacks</h3>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="SnackGranolaBar">
+                <label class="form-check-label" asp-for="SnackGranolaBar"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="SnackCrackers">
+                <label class="form-check-label" asp-for="SnackCrackers"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="SnackChips">
+                <label class="form-check-label" asp-for="SnackChips"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="SnackOther">
+                <label class="form-check-label" asp-for="SnackOther"></label>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <h3>Ramen</h3>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="RamenVegetable">
+                <label class="form-check-label" asp-for="RamenVegetable"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="RamenChicken">
+                <label class="form-check-label" asp-for="RamenChicken"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="RamenShrimp">
+                <label class="form-check-label" asp-for="RamenShrimp"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="RamenBeef">
+                <label class="form-check-label" asp-for="RamenBeef"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="RamenPork">
+                <label class="form-check-label" asp-for="RamenPork"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="RamenOther">
+                <label class="form-check-label" asp-for="RamenOther"></label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Beans</h3>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="BeanCanned">
+                <label class="form-check-label" asp-for="BeanCanned"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="BeanDry">
+                <label class="form-check-label" asp-for="BeanDry"></label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Cereal</h3>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CerealKids">
+                <label class="form-check-label" asp-for="CerealKids"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CerealOatmeal">
+                <label class="form-check-label" asp-for="CerealOatmeal"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CerealBreakfastBar">
+                <label class="form-check-label" asp-for="CerealBreakfastBar"></label>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <h3>Canned Meat</h3>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CanMeatTuna">
+                <label class="form-check-label" asp-for="CanMeatTuna"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="CanMeatOther">
+                <label class="form-check-label" asp-for="CanMeatOther"></label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Boxed Meals</h3>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="BoxMealBeef">
+                <label class="form-check-label" asp-for="BoxMealBeef"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="BoxMealChicken">
+                <label class="form-check-label" asp-for="BoxMealChicken"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="BoxMealVegetarian">
+                <label class="form-check-label" asp-for="BoxMealVegetarian"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="BoxMealOther">
+                <label class="form-check-label" asp-for="BoxMealOther"></label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Other</h3>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="OtherCannedFruit">
+                <label class="form-check-label" asp-for="OtherCannedFruit"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="OtherPeanutButter">
+                <label class="form-check-label" asp-for="OtherPeanutButter"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="OtherJelly">
+                <label class="form-check-label" asp-for="OtherJelly"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="OtherMacNCheese">
+                <label class="form-check-label" asp-for="OtherMacNCheese"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="OtherMashedPotatoe">
+                <label class="form-check-label" asp-for="OtherMashedPotatoe"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="OtherRice">
+                <label class="form-check-label" asp-for="OtherRice"></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" asp-for="OtherPastaAndSauce">
+                <label class="form-check-label" asp-for="OtherPastaAndSauce"></label>
+            </div>
+        </div>
+    </div>
+
+
+    <p><span style="font-weight: bold;">PLEASE NOTE:</span> We want to be able to serve as many students and staff members as possible. Therefore, we ask that you <span style="font-weight: bold;">refrain from requesting items that you have left over from your prior visits.</span> Thank you!</p>
+
+    <div class="d-flex justify-content-center align-items-center vh-50">
+        <div class="d-grid gap-2">
+            <button id="submitButtonRequest" class="btn btn-custom-blue" type="submit" style="width: 500px; margin-bottom: 100px; margin-top: 25px">Submit</button>
+        </div>
+
+
+        @* <script>
+        // JavaScript to handle button click event
+        document.getElementById("nextButton").addEventListener("click", function () {
+        window.location.href = '@Url.Action("userApplicationForm", "Registration")';
+        });
+        </script> *@
+
+</form>
+        

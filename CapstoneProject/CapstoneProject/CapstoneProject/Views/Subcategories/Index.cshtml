@@ -1,0 +1,57 @@
+﻿@model List<CategoryDTO>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container">
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Subcategories</h2>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-3" style="justify-self:center; margin-bottom: 12px;">
+        <a class="btn btn-primary form-control" asp-controller="Subcategories" asp-action="Add">Add Subcategory</a>
+    </div>
+
+    <div style="overflow-y: scroll; height: 500px;">
+        <table class="table table-bordered table-striped">
+            <thread>
+                <tr>
+                    <th>
+                        Category Name
+                    </th>
+                    <th>
+                        Subcategory Name
+                    </th>
+                    <th>
+                        <!--Empty for formatting-->
+                    </th>
+            </thread>
+            <tbody>
+                @foreach (var cat in Model)
+                {
+                    foreach (var sub in cat.subcategories)
+                    {
+                        <tr>
+                            <td>@cat.category.Name</td>
+                            <td>@sub.Name</td>
+                            <td>
+                                <div class="w-100 btn-group" role="group">
+                                    <a asp-controller="Subcategories" asp-action="Edit" asp-route-id="@sub.SubcategoryID" class="btn btn-primary mx-2">
+                                        <i class="bi bi-pencil-square"></i>Edit
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+
+
+        </table>
+    </div>
+</div>

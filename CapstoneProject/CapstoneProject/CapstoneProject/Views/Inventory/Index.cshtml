@@ -1,0 +1,41 @@
+﻿@model List<Item>
+<head>
+    <style>
+        .btn-custom-blue {
+            background-color: #242c5c;
+            border-color: #242c5c;
+            color: white;
+            width: 25%;
+        }
+
+        .btn-custom-blue:hover {
+            background-color: #349444;
+            border-color: #349444;
+            color: white;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: row;
+            gap: 50px;
+            justify-self: center;
+            justify-content: center;
+            width: 80%;
+        }
+
+        @@media (width <= 500px) {
+            .btn-container {
+                flex-direction: column;
+            }
+
+            .btn-custom-blue {
+                width: 75%;
+            }
+        }
+    </style>
+</head>﻿
+<div class="btn-container">
+    <a class="btn btn-custom-blue" asp-controller="Inventory" asp-action="LookUp">View Items</a>
+    <a class="btn btn-custom-blue" asp-controller="Categories" asp-action="Index">View Categories</a>
+    <a class="btn btn-custom-blue" asp-controller="Subcategories" asp-action="Index">View Subcategories</a>
+</div>

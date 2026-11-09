@@ -1,0 +1,239 @@
+﻿@model Item
+
+<div class="border p-3 mt-4">
+    <div class="row pb-2">
+        <h2 class="text-primary">Edit Item</h2>
+        <hr />
+        <hr />
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">UUID</label>
+        <input id="uuid" class="form-control" readonly value="@Model.UUID" />
+        <span id="uuidWarning" class="text-danger"></span>
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">Description</label>
+        <input id="description" class="form-control" value="@Model.Description" />
+        <span id="descriptionWarning" class="text-danger"></span>
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">Category</label>
+        <select id="category" class="form-control">
+        </select>
+
+        <span id="categoryWarning" class="text-danger"></span>
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">Subcategory</label>
+        <select id="subcategory" class="form-control">
+        </select>
+
+        <span id="subcategoryWarning" class="text-danger"></span>
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">Quantity</label>
+        <input id="quantity" class="form-control" type="number" value="@Model.Quantity" min="0"/>
+        <span id="quantityWarning" class="text-danger"></span>
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">Point Cost</label>
+        <input id="pointCost" class="form-control" type="number" value="@Model.PointCost" min="0" />
+        <span id="pointCostWarning" class="text-danger"></span>
+    </div>
+    <div class="row">
+        <div class="col-6 col-md-3">
+            <button id="submitBtn" type="submit" class="btn btn-primary form-control">Update</button>
+        </div>
+        <div class="col-6 col-md-3">
+            <a asp-controller="Inventory" asp-action="LookUp" class="btn btn-secondary form-control">Back</a>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
+<script>
+    window.onload = async function() {
+        await populateCategories();
+        $("#category").on("change", populateSubcategories);
+        await populateSubcategories();
+        $("#subcategory").val("@(Model.SubcategoryID)")
+        $("#submitBtn").on("click", postItem);
+        itemId = @(Model.ItemID);
+
+    }
+
+    async function populateCategories() {
+        const catDropdown = $("#category");
+        if(catDropdown) {
+            catDropdown.empty();
+
+            try {
+                const res = await fetch("../User/PopulateCategoryDropdown")
+                if(!res.ok) throw new Error("No categories available")
+                const data = await res.json()
+
+                data.forEach(x=>catDropdown.append(`<option value="${x.categoryID}">${x.name}</option>`));
+                catDropdown.val("@Model.ItemSubcategory.CategoryID")
+            } catch (err) {
+                 catDropdown.append(`<option val="-1">${err}</option>`);
+            }
+            
+            /*
+            fetch("../User/PopulateCategoryDropdown")
+            .then(res => {
+                if(!res.ok) {
+                    throw new Error("No categories available");
+                }
+                else {
+                    return res.json();
+                }
+            })
+            .then(data => {
+                data.forEach(x=>catDropdown.append(`<option value="${x.categoryID}">${x.name}</option>`));
+                catDropdown.val("@Model.ItemSubcategory.CategoryID")
+                
+                //alert("@(Model.SubcategoryID)")
+            })
+            .catch(err => {
+                catDropdown.append(`<option val="-1">${err}</option>`);
+            });
+            */
+        }
+    }
+
+    async function populateSubcategories() {
+        const catDropdown = $("#category")
+        const subcatDropdown = $("#subcategory");
+        if(catDropdown && catDropdown.val() != -1 && subcatDropdown) {
+            subcatDropdown.empty();
+            //alert(`${catDropdown.val()}`)
+
+            try {
+                const res = await fetch(`../User/PopulateSubcategoryDropdown?category=${catDropdown.val()}`)
+                if(!res.ok) throw new Error("No subcategories available")
+                const data = await res.json()
+
+                data.forEach(x=>subcatDropdown.append(`<option value="${x.subcategoryID}">${x.name}</option>`));
+                subcatDropdown.val(data[0].subcategoryID);
+            } catch (err) {
+                 subcatDropdown.append(err);
+            }
+
+            /*
+            fetch(`../User/PopulateSubcategoryDropdown?category=${catDropdown.val()}`)
+            .then(res => {
+                if(!res.ok) {
+                    throw new Error("No subcategories available");
+                }
+                else {
+                    return res.json();
+                }
+            })
+            .then(data => {
+                data.forEach(x=>subcatDropdown.append(`<option value="${x.subcategoryID}">${x.name}</option>`));
+                subcatDropdown.val(data[0].subcategoryID);
+            })
+            .catch(err => {
+                subcatDropdown.append(err);
+            });
+            */
+    }
+    }
+
+    async function postItem() {
+        let uuid = $("#uuid").val();
+        let description = $("#description").val();
+        let category = $("#category").val();
+        let categoryText = $("#category option:selected").text();
+        let subcategory = $("#subcategory").val();
+        let quantity = $("#quantity").val();
+        let pointCost = $("#pointCost").val();
+        let valid = true;
+         $("#uuidWarning").text("");
+         $("#descriptionWarning").text("");
+         $("#categoryWarning").text("");
+         $("#subcategoryWarning").text("");
+         $("#quantityWarning").text("");
+         $("#pointCostWarning").text("");
+
+        if(!validateUUID(uuid)) {
+            $("#uuidWarning").text("UUID must be 12 characters long");
+            valid = false;
+        }
+        if(!validateDescription(description)) {
+            $("#descriptionWarning").text("Item description cannot be blank");
+            valid = false;
+        }
+        if(!validateCategory(category)) {
+            $("#categoryWarning").text("Please select a valid category");
+            valid = false;
+        }
+        if(!validateSubcategory(subcategory)) {
+            $("#subcategoryWarning").text("Please select a valid subcategory");
+            valid = false;
+        }
+        if(!validateQuantity(quantity)) {
+            $("#quantityWarning").text("Please enter a whole number greater than 0");
+            valid = false;
+        }
+        if(!validatePointCost(pointCost)) {
+            $("#pointCostWarning").text("Please enter a whole number greater than 0")
+        }
+        if(valid) {
+            let item = {
+                    "ItemID": Number(itemId),
+                    "UUID": uuid,
+                    "Description": description,
+                    "SubcategoryID": Number(subcategory),
+                    "Quantity": Number(quantity),
+                    "PointCost": pointCost
+                };
+
+            fetch("/Inventory/Edit", {
+                method: "POST",
+                body: JSON.stringify(item),
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
+
+            })
+            .then(res => {
+                if(res.ok){
+                    window.location.href = "/inventory/lookup";
+                }
+                else {
+                    throw new Error(`Unable to add item: ${res.status}`);
+                }
+            })
+            .catch(err => {
+                alert(err);
+            })
+        }
+    }
+
+    function validateUUID(uuid) {
+        return uuid && typeof(uuid) === typeof("") && uuid.trim() !== "" && uuid.length == 12;
+    }
+    function validateDescription(description) {
+        return description && typeof(description) === typeof("") && description.trim() !== "";
+    }
+    function validateCategory(category) {
+        return category && category != -1;
+    }
+    function validateSubcategory(subcategory) {
+        return subcategory && subcategory != -1;
+    }
+    function validateQuantity(quantity) {
+        return quantity && quantity >= 0 && quantity % 1 == 0;
+    }
+    function validatePointCost(pointCost) {
+        return pointCost && pointCost >= 0 && pointCost % 1 == 0;
+    }
+</script>

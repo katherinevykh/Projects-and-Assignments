@@ -1,0 +1,68 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<head>
+    <style>
+        .btn-custom-blue {
+            background-color: #242c5c;
+            border-color: #242c5c;
+            color: white;
+        }
+
+            .btn-custom-blue:hover {
+                background-color: #349444;
+                border-color: #349444;
+                color: white;
+            }
+    </style>
+</head>
+
+<div class="container">
+    <div class="d-flex align-items-center">
+        <img src="/Images/logo.png" class="img-thumbnail d-inline me-4" alt="Chaser Logo" style="max-width: 300px" />
+    </div>
+</div>
+<div>
+    <body>
+     <h1 class="text-center fs-1">WELCOME!</h1>
+
+    <p class="text-center mb-5"><strong>Please take a few minutes to review this information so that you have a better idea about how to make use of us.</strong></p>
+
+    <p class="text-center mb-5">The SCC Pantry is generally open every Wednesday from 5:30 p.m. to 7 p.m. during the 
+        <br />academic year. Please obtain the current schedule online or call us to verify our hours of operation.</p>
+
+    <p class="text-center mb-5">To be eligible for our services, you must be enrolled for courses and present proof of enrollment.</p>
+
+    <p class="text-center mb-5">Please bring your Student ID every time you visit the pantry. Without your ID, we will be unable to serve you.</p>
+
+    <p class="text-center mb-5">
+        Every time you come to the food pantry, you will be asked to check in at the front table
+        <br />and then have a short interview with one of our volunteers. The purpose of this 
+        <br />interview is to determine what kinds of foods you would like, and to provide other information as appropriate.</p>
+
+    <p class="text-center mb-5">
+        Products offered are dependent on their availability, as well as our financial situation.
+        <br />We try to provide as much variety as possible, while sticking to our budget and providing for the basic food needs of our users</p>
+
+    <p class="text-center mb-5">Please only take the kinds of food you will actually use, so that we have plenty for everyone.</p>
+
+    <p class="text-center mb-5">If you are interested in volunteering, please email us and our volunteer coordinator will contact you.</p>
+
+    <p class="text-center mb-5">If you have any questions, please email us or visit the pantry and speak to one of our volunteers in person.</p>
+
+        <div class="d-flex justify-content-center align-items-center vh-50">
+            <div class="d-grid gap-2">
+                <button id="nextButton" class="btn btn-custom-blue" type="button" style="width: 500px; margin-bottom: 100px">Next</button>
+            </div>
+        </div>
+
+        <script>
+            // JavaScript to handle button click event
+            document.getElementById("nextButton").addEventListener("click", function () {               
+                window.location.href = '@Url.Action("RulesForm", "Registration")'; 
+            });
+        </script>
+    </body>
+<div>

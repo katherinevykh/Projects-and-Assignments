@@ -1,0 +1,99 @@
+﻿@model Liability
+
+<head>
+    <style>
+        .btn-custom-blue {
+            background-color: #242c5c;
+            border-color: #242c5c;
+            color: white;
+        }
+
+            .btn-custom-blue:hover {
+                background-color: #349444;
+                border-color: #349444;
+                color: white;
+            }
+
+        .form-bottom-margin {
+            margin-bottom: 80px;
+        }
+    </style>
+</head>
+
+<div class="container">
+    <div class="d-flex align-items-center">
+        <img src="/Images/logo.png" class="img-thumbnail d-inline me-4" alt="Chaser Logo" style="max-width: 300px;">
+    </div>
+
+    <h1 class="text-end mb-5">LIABILITY <span class="text-success">FORM</span></h1>
+
+    <p class="mb-5">
+        I understand that food distributed at SCC Pantry Resource has been donated from various on-campus partners, and that none of the parties or groups involved in the program makes any guarantees as to the quality of the food or its value for any particular purposes. Some of the food distributed at SCC Pantry Resource may have surpassed its "best by" consumption date. The USDA states that "best if used by or before" date is recommended for best flavor or quality. It is not a purchase or safety date.
+    </p>
+
+    <p class="mb-5">
+        By signing below, I release Spartanburg Community College and the original donor from any liability or harm (including injury or death) or losses in connection with the food or supplies I have received. I assume any risks and covenant not to sue the released parties with respect to such harm or losses.
+    </p>
+
+    <p class="mb-5">
+        <strong>I understand that SCC Pantry Resource operates on limited funds and by the support of others. I will only request and take items that I reasonably expect myself and/or family to use.</strong>
+    </p>
+
+    <form asp-controller="UpdateLiabilityForm" asp-action="Submit" method="post" class="form-bottom-margin">
+        <div class="row mb-4">
+            <label asp-for="FirstName" class="col-sm-2 col-form-label">
+                Full Name:
+            </label>
+            <div class="col-sm-8">
+                <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <label asp-for="MidName" class="col-sm-2 col-form-label">
+                Middle Name:
+            </label>
+            <div class="col-sm-8">
+                <input asp-for="MidName" class="form-control" placeholder="Middle Name" />
+                <span asp-validation-for="MidName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <label asp-for="LastName" class="col-sm-2 col-form-label">
+                Last Name:
+            </label>
+            <div class="col-sm-8">
+                <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <label asp-for="UserID" class="col-sm-2 col-form-label">
+                Student ID:
+            </label>
+            <div class="col-sm-8">
+                <input asp-for="UserID" class="form-control" />
+                <span asp-validation-for="UserID" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <label asp-for="Date" class="col-sm-2 col-form-label">
+                Date:
+            </label>
+            <div class="col-sm-8">
+                <input asp-for="Date" class="form-control" type="date" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="d-grid gap-2">
+                <button type="submit" id="nextButton" class="btn btn-custom-blue" style="width: 500px; margin-bottom: 100px; margin-top: 25px">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>

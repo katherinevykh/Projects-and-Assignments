@@ -1,0 +1,582 @@
+@model CartList
+<head>
+    <style>
+        .btn-custom-blue {
+            background-color: #242c5c;
+            border-color: #242c5c;
+            color: white;
+        }
+
+            .btn-custom-blue:hover {
+                background-color: #349444;
+                border-color: #349444;
+                color: white;
+            }
+    </style>
+</head>﻿
+
+<div class="container">
+    <div class="d-flex align-items-center">
+        <img src="/Images/ChaserLogo.png" class="img-thumbnail d-inline me-4" alt="Chaser Logo">
+        <div>
+            <h3>SCC</h3>
+            <p>FOOD PANTRY</p>
+        </div>
+    </div>
+    <h1 class="text-end mb-5">AID <span class="text-success">RECIEPT</span></h1>
+    <h2 class="mb-4">Order Form for: @ViewBag.Username</h2>
+
+    <small id="userID" hidden>@ViewBag.UserID</small>
+
+    <div class="row mb-4">
+        <label for="category" class="col-sm-2 col-form-label">
+            Category:
+        </label>
+        <div class="col-sm-8">
+            <select class="form-select" id="category" required>
+
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <label for="subcategory" class="col-sm-2 col-form-label">
+            Subcategory:
+        </label>
+        <div class="col-sm-8">
+            <select class="form-select" id="subcategory" required>
+
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <label for="itemName" class="col-sm-2 col-form-label">
+            Item Name:
+        </label>
+        <div class="col-sm-8">
+            <select id="itemName" class="form-select" required>
+            </select>
+        </div>
+    </div>
+
+</div>
+<div class="d-flex justify-content-center align-items-center vh-50">
+    <div class="d-grid gap-2">
+        <button id="addItemButton" class="btn btn-custom-blue" type="button" style="width: 500px; margin-top: 10px">Add Item</button>
+    </div>
+</div>
+<div class="d-flex justify-content-center align-items-center vh-50" style="height: 10px; margin-top: 25px">
+    <p class="mt-3 slogan-text" id="warningExisting">Item already in cart</p>
+</div>
+
+<div class="container">
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Cart</h2>
+            <p class="">Points Available: @ViewBag.points</p>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped table-align-content-center" id="myTable">
+        <thead>
+            <tr>
+                <th style="text-align: center" width="100px">Item ID</th>
+                <th style="text-align: center" width="400px">Item Name</th>
+                <th style="text-align: center" width="150px">+/-</th>
+                <th style="text-align: center" width="100px">Requested</th>
+                <th style="text-align: center" width="100px">On-Hand</th>
+                <th style="text-align: center" width="100px">Cost</th>
+                <th style="text-align: center" width="100px">Is RG</th>
+                <th style="text-align: center" width="100px">Is PAL</th>
+                <th style="text-align: center" width="125px">Remove</th>
+            </tr>
+        </thead>
+        <tbody id="cartTable">
+        </tbody>
+    </table>
+</div>
+    <p>Special Requests</p>
+    <textarea id="specialRequests" style="width: 100%; height: 100px;" placeholder="Enter any special requests here"></textarea>
+</div>
+<div class="d-flex justify-content-center align-items-center vh-50">
+    <div class="d-grid gap-2">
+        <button id="checkoutButton" class="btn btn-custom-blue" type="button" style="width: 500px; margin-bottom: 30px; margin-top: 25px">Checkout</button>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center align-items-center vh-50" style="height: 10px; margin-top: 25px">
+    <p class="mt-3 slogan-text" id="warningEmpty">Cart is empty</p>
+</div>
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            $("#warningExisting").hide()
+            $("#warningEmpty").hide()
+            populateCategoryDropdown()
+            populateSubcategoryDropdown()
+            populateItemDropdown()
+            DrawTable()
+        });
+
+        var cartNum = 0; //This is used to assign the table row a unique id so it can be used to find the corresponding cartItem[] held inside cartList[]
+
+        var cartList = []; //Holds all cart items
+        var cartItem = []; //holds current item, is emptied each time its pushed to cartList[]
+
+        $("#itemName").change(function () {
+            $("#warningExisting").hide()
+            $("#warningEmpty").hide()
+        })
+        $("#subcategory").change(function () {
+            populateItemDropdown();
+            $("#warningExisting").hide()
+            $("#warningEmpty").hide()
+        })
+        $("#category").change(function () {
+            populateSubcategoryDropdown();
+            populateItemDropdown();
+            $("#warningExisting").hide()
+            $("#warningEmpty").hide()
+        })
+
+                var populateCategoryDropdown = function() {
+            $.ajax({
+                url: '@Url.Action("PopulateCategoryDropdown", "User")',
+                type: 'GET',
+                async: false,
+                success: function (data) {
+                    $('#category').find('option').remove()
+                    $(data).each(function (index, cat) {
+                        $('#category').append('<option value="' + cat.categoryID + '">' + cat.name + '</option>')
+                    })
+
+                    // Populate subcategories now that category is set
+                    populateSubcategoryDropdown()
+                }
+            })
+        }
+
+                var populateCategoryDropdown = function () {
+            $.ajax({
+                url: '@Url.Action("PopulateCategoryDropdown", "User")',
+                type: 'GET',
+                success: function (data) {
+                    $('#category').empty();
+
+                    if (data.length === 0) {
+                        $('#category').append('<option>No categories available</option>');
+                        $('#subcategory').empty().append('<option>No category selected</option>');
+                        $('#itemName').empty().append('<option>No subcategory selected</option>');
+                        return;
+                    }
+
+                    $(data).each(function (index, cat) {
+                        $('#category').append('<option value="' + cat.categoryID + '">' + cat.name + '</option>');
+                    });
+
+                    $('#category').val(data[0].categoryID);
+                    populateSubcategoryDropdown();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error loading categories:", error);
+                }
+            });
+        };
+
+        var populateSubcategoryDropdown = function () {
+            var selectedCategory = $('#category').val();
+            $('#subcategory').empty();
+            $('#itemName').empty();
+
+            if (!selectedCategory) {
+                $('#subcategory').append('<option>No category selected</option>');
+                $('#itemName').append('<option>No subcategory selected</option>');
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("PopulateSubcategoryDropdown", "User")',
+                type: 'GET',
+                data: { category: selectedCategory },
+                success: function (data) {
+                    if (data.length === 0) {
+                        $('#subcategory').append('<option>No subcategories available</option>');
+                        $('#itemName').append('<option>No subcategory selected</option>');
+                        return;
+                    }
+
+                    $(data).each(function (index, subcat) {
+                        $('#subcategory').append('<option value="' + subcat.subcategoryID + '">' + subcat.name + '</option>');
+                    });
+
+                    $('#subcategory').val(data[0].subcategoryID);
+
+                    populateItemDropdown();
+                    console.log("Running SubCategory");
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error loading subcategories:", error);
+                }
+            });
+        };
+
+        var populateItemDropdown = function () {
+            var selectedSubcategory = $('#subcategory').val();
+            $('#itemName').empty();
+            if (!selectedSubcategory) {
+                $('#itemName').append('<option>No subcategory selected</option>');
+                return;
+            }
+            console.log(selectedSubcategory);
+            $.ajax({
+                url: '@Url.Action("PopulateItemDropdown", "User")',
+                type: 'GET',
+               data: { subcategoryID: selectedSubcategory },
+                success: function (data) {
+                    if (data.length === 0 || data.every(x=>x.quantity == 0)) {
+                        $('#itemName').append('<option>No items available</option>');
+                        console.log(data.length);
+                        return;
+                    }
+
+                    $(data).each(function (index, item) {
+                        if(item.quantity > 0)
+                        {
+                            $('#itemName').append('<option value="' + item.itemID + '">' + item.description + '</option>');
+                        }
+                        //console.log(item.ItemID);
+                        //console.log(item.Name);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error loading items:", error);
+                }
+            });
+        };
+
+
+
+
+
+        document.getElementById("addItemButton").addEventListener("click", function () {
+
+            if ($('#itemName option:selected').val() != null) {
+
+                var dropDownContent = $('#itemName option:selected').text();
+                var itemID = $('#itemName').val(); //This is where the ItemID is stored
+
+                GetItemByItemID(parseInt(itemID)); //Runs function to pull item info into JSON and splice into cartItem[]
+
+                DrawTable(); //Redraws table
+
+                cartNum += 1;
+
+                console.log(cartList)
+            }
+
+        });
+
+        var GetItemByItemID = function (itemID) {
+            $.ajax({
+                url: '@Url.Action("GetItemByItemID", "User")',
+                type: 'GET',
+                async: false,
+                data: {
+                    itemID: itemID,
+                },
+                success: function (data) {
+
+                    var itemExists = false
+
+                    var dropDownContent = $('#itemName option:selected').text();
+                    var itemName = dropDownContent.trim()
+
+                    for (let i = 0; i < cartList.length; i++) {
+                        if (cartList[i].cartItem[0]["description"] == itemName) {
+                            itemExists = true
+                            $("#warningExisting").show()
+                        }
+                    }
+
+                    if (itemExists == false)  {
+                            cartItem = data.slice() //Adds returned Json to cartItem
+                        
+                        
+                            var temp = { cartNum: cartNum, quantityReq: 1, isRG: false, isPAL: false } //Used to append additional data to new Array
+
+                            cartItem.push(temp)
+                            if(cartItem.length != 2) return
+
+                            cartList.push({ //Add CartItem[] to CartList[]
+                                cartItem
+                            })
+
+                            cartList.pop
+                    }
+                }
+            })
+        }
+
+        var DrawTable = function () {
+
+            $("#cartTable").empty();
+            console.log(cartList)
+            let total = 0
+            for (let i = 0; i < cartList.length; i++) {
+                
+                $('#cartTable').append($('<tr id="' + cartList[i].cartItem[1]["cartNum"] + '">')
+                    .append($('<td align="center">').append(cartList[i].cartItem[0]["itemID"]))
+                    .append($('<td>').append(cartList[i].cartItem[0]["description"]))
+                    .append($('<td align="center">').append('<button class="btn btn-primary mx-2" value=1 >+</button>', '<button class="btn btn-primary mx-2" value=2 >–</button>'))
+                    .append($('<td align="center">').append(cartList[i].cartItem[1]["quantityReq"]))
+                    .append($('<td align="center">').append(cartList[i].cartItem[0]["quantity"]))
+                    .append($('<td align="center">').append(cartList[i].cartItem[0]["pointCost"] * cartList[i].cartItem[1]["quantityReq"]))
+                    .append($('<td align="center">').append('<input type="checkbox" id="isRG" class="dt-checkboxes" value=3 ><checkbox/>'))
+                    .append($('<td align="center">').append('<input type="checkbox" id="isPAL" class="dt-checkboxes" value=4 ><checkbox/>'))
+                    .append($('<td align="center">').append('<button class="btn btn-primary mx-2" value=0 >Remove</button>')))
+                    total += cartList[i].cartItem[0]["pointCost"] * cartList[i].cartItem[1]["quantityReq"]
+                
+                drawCheckBoxes()
+            }
+            $('#cartTable').append($('<tr>'))
+                    .append($('<td align="center">'))
+                    .append($('<td align="center">'))
+                    .append($('<td align="center">'))
+                    .append($('<td align="center">'))
+                    .append($('<td align="center">'))
+                    .append($('<td align="center" id="totalCost">').append("Total: " + total))
+                    .append($('<td align="center">'))
+                    .append($('<td align="center">'))
+                    .append($('<td align="center">'))
+        }
+
+        function drawCheckBoxes() {
+
+            for (let i = 0; i < cartList.length; i++) {
+
+                $('#cartTable tr').each(function () {
+
+                    if (cartList[i].cartItem[1]["isRG"] == true) {
+
+                        // $('#isRG')[0].checked = true
+                    }
+                    if (cartList[i].cartItem[1]["isPAL"] == true) {
+
+                        // $('#isPAL')[0].checked = true
+                    }
+                })
+            }
+        }
+
+        $('#cartTable').on('click', 'button', onClickButton);
+        $('#cartTable').on('click', 'input', onCheckChange);
+
+        function onClickButton() {
+
+            
+            var rowID = $(this).parents('tr').attr("id")
+
+            if (this.value == "0") { //Delete Button
+
+                $(this).parents('tr').remove();
+
+                for (let i = 0; i < cartList.length; i++) {
+
+                    if (cartList[i].cartItem[1]["cartNum"] == rowID) {
+                        console.log('Removed: (' + cartList[i].cartItem[0]["description"] + ') at cartList[' + i + '] for cartNum: ' + rowID)
+                        cartList.splice(i, 1)
+                        console.log("cartList after remove")
+                        console.log(cartList)
+                    }
+                }
+            }
+
+            if (this.value == "1") { //Add Button
+
+                var oldVal = parseInt($(this).parents('tr').children().eq(3).html())
+                var onHand = parseInt($(this).parents('tr').children().eq(4).html())
+                if (oldVal < onHand) {
+                    //$(this).parents('tr').children().eq(3).html(oldVal + 1) //Set table value
+                    //pointCost = $(this).parents('tr').children().eq(5).html() / oldVal
+                    //console.log(pointCost)
+                   //$(this).parents('tr').children().eq(5).html((oldVal + 1) * pointCost)
+                   
+                    for (let i = 0; i < cartList.length; i++) {
+
+                        if (cartList[i].cartItem[1]["cartNum"] == rowID) {
+                            cartList[i].cartItem[1]["quantityReq"] += 1
+                            console.log("Added to quantity for " + cartList[i].cartItem[0]["description"] + ":" + cartList[i].cartItem[1]["quantityReq"])
+                        }
+                    }
+                    DrawTable()
+                }
+            }
+
+            if (this.value == "2") { //Sub button
+
+                var oldVal = parseInt($(this).parents('tr').children().eq(3).html()) //Set table value
+
+                if (oldVal > 1) {
+                    for (let i = 0; i < cartList.length; i++) {
+                        
+                        if (cartList[i].cartItem[1]["cartNum"] == rowID) {
+                            cartList[i].cartItem[1]["quantityReq"] -= 1
+                            console.log("Subtracted from quantity for " + cartList[i].cartItem[0]["description"] + ":" + cartList[i].cartItem[1]["quantityReq"])
+                        }
+                    }
+                    DrawTable()
+                }
+            }
+        }
+
+        function onCheckChange() { //For the isRG and isPAL checkboxes
+
+            var rowID = $(this).parents('tr').attr("id")
+
+            if (this.value == "3") { //isRG checkbox
+
+                if (this.checked) { //true
+
+                    for (let i = 0; i < cartList.length; i++) {
+
+                        if (cartList[i].cartItem[1]["cartNum"] == rowID) {
+
+                            cartList[i].cartItem[1]["isRG"] = true
+
+                            console.log('IsRG changed to true for : (' + cartList[i].cartItem[0]["description"] + ') at cartList[' + i + '] for cartNum: ' + rowID)
+                        }
+                    }
+
+                } else { //false
+
+                    for (let i = 0; i < cartList.length; i++) {
+
+                        if (cartList[i].cartItem[1]["cartNum"] == rowID) {
+
+                            cartList[i].cartItem[1]["isRG"] = false
+
+                            console.log('IsRG changed to false for : (' + cartList[i].cartItem[0]["description"] + ') at cartList[' + i + '] for cartNum: ' + rowID)
+                        }
+                    }
+                }
+            }
+
+            if (this.value == "4") { //isPAL checkbox
+
+                if (this.checked) { //true
+
+                    for (let i = 0; i < cartList.length; i++) {
+
+                        if (cartList[i].cartItem[1]["cartNum"] == rowID) {
+
+                            cartList[i].cartItem[1]["isPAL"] = true
+
+                            console.log('IsPAL changed to true for : (' + cartList[i].cartItem[0]["description"] + ') at cartList[' + i + '] for cartNum: ' + rowID)
+                        }
+                    }
+
+                } else { //false
+
+                    for (let i = 0; i < cartList.length; i++) {
+
+                        if (cartList[i].cartItem[1]["cartNum"] == rowID) {
+
+                            cartList[i].cartItem[1]["isPAL"] = false
+                            console.log('IsPAL changed to false for : (' + cartList[i].cartItem[0]["description"] + ') at cartList[' + i + '] for cartNum: ' + rowID)
+                        }
+                    }
+                }
+            }
+        }
+
+        document.getElementById("checkoutButton").addEventListener("click", function () {
+
+            if (cartList.length > 0 || $("#specialRequests").val().trim() != "") { //Make sure it has items in cart
+
+                var userID = $('#userID').text() //Get UserID
+
+                //cartListJson = JSON.stringify({ 'cartList': cartList, 'userID': userID }); //Get it ready to send to controller
+
+                cartListJson = generatePayloadJson(userID)
+
+                console.log(cartListJson)
+
+                let total = $("#totalCost").html().substring(6)
+                console.log(Number(@ViewBag.points) > Number(total))
+                console.log(`${Number(@ViewBag.points)} > ${Number(total)}`)
+                if(Number(@ViewBag.points) < Number(total)) {
+                    alert("Cost exceeds available points");
+                    return
+                }
+
+               // Post Transaction
+
+                $.ajax(
+                    {
+                        url: '@Url.Action("PostTransaction", "User")',
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        data: cartListJson,
+                        success: function (data, textStatus, jqXHR) {
+                            cartList = []
+                            DrawTable()
+                            alert("Request submitted successfully.")
+                            window.location.href = "/home/index"
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert("Unable to process request.\nPlease try again later or contact administrator.")
+                        }
+                    });
+            }
+            else {
+                $("#warningEmpty").show() //Show cart items empty message
+            }
+        });
+
+
+        //Reorganizes data to map onto the CartList model
+        function generatePayloadJson(userID) {
+            const payloadObj =
+            {
+                'userID': userID,
+                'specialRequests': $("#specialRequests").val(),
+                'cartList': []
+            }
+
+            console.log(cartList)
+            for(let i = 0; i < cartList.length; i++)
+            {
+                console.log(i)
+                const newItem =
+                {
+                    'item':
+                    {
+                        'itemID': cartList[i].cartItem[0].itemID,
+                        'uuid': cartList[i].cartItem[0].uuid,
+                        'description': cartList[i].cartItem[0].description,
+                        'quantity': cartList[i].cartItem[0].quantity,
+                        'subcategoryID': cartList[i].cartItem[0].subcategoryID,
+                        'pointCost': cartList[i].cartItem[0].pointCost
+
+                    },
+                    'info':
+                    {
+                        'quantityReq': cartList[i].cartItem[1].quantityReq,
+                        'isRG': cartList[i].cartItem[1].isRG,
+                        'isPAL': cartList[i].cartItem[1].isPAL
+                    }
+                }
+
+                payloadObj.cartList.push(newItem)
+            }
+
+
+            return JSON.stringify(payloadObj)
+        }
+
+    </script>
+}

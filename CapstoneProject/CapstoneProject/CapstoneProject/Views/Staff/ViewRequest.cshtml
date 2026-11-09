@@ -1,0 +1,288 @@
+﻿@model Transaction
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<h1>Request: @Model.TransactionID</h1>
+<h2>User ID: @Model.UserID</h2>
+<h2>User Email: @ViewBag.email</h2>
+<h2>Request Date: @Model.Date.ToShortDateString()</h2>
+<hr />
+@if(Model.IsProcessed)
+{
+    <div class="container" style="overflow-y:scroll;height: 35vh;">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        UUID
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Quantity Requested
+                    </th>
+                    <th>
+                        Quantity Available
+                    </th>
+                    <th>
+                        RG
+                    </th>
+                    <th>
+                        PAL
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="rows">
+                @foreach (var line in Model.LineItems)
+                {
+                    <tr>
+                        <td>
+                            @line.Item.UUID
+                        </td>
+
+                        <td>
+                            @line.Item.Description
+                        </td>
+                        <td>
+                            @line.Quantity
+                        </td>
+                        <td>
+                            @line.Item.Quantity
+                        </td>
+                        <td>
+                            <input type="checkbox" checked="@line.IsRG" onclick="return false;" />
+                        </td>
+                        <td>
+                            <input type="checkbox" checked="@line.IsPAL" onclick="return false;" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+        @if(Model.SpecialRequests != "")
+        {
+            <textarea readonly >@(Model.SpecialRequests ?? "No special requests made")</textarea>
+            <input type="number" readonly value="@Model.AdditionalPointCost" />
+        }
+        
+    </div>
+}
+else
+{
+
+    <a role="button" id="processBtn" class="btn btn-primary mx-2" style="background-color: grey; margin-bottom: 10px;">Approve Request</a>
+    <a role="button" id="rejectBtn" class="btn btn-primary mx-2" style="margin-bottom: 10px;" onclick="rejectRequest()">Reject Request</a>
+    <div style="display: flex; flex-direction: column; justify-content: center;">
+        <div class="container" style="overflow-y:scroll;height: 35vh;">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Item ID
+                        </th>
+                        <th>
+                            UUID
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Quantity Requested
+                        </th>
+                        <th>
+                            Quantity Available
+                        </th>
+                        <th>
+                            Quantity Given
+                        </th>
+                        <th>
+                            RG
+                        </th>
+                        <th>
+                            PAL
+                        </th>
+                        <th>
+                            Processed
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="rows">
+                    @foreach (var line in Model.LineItems)
+                    {
+                        <tr>
+                            <td>
+                                @line.ItemID
+                            </td>
+                            <td>
+                                @line.Item.UUID
+                            </td>
+
+                            <td>
+                                @line.Item.Description
+                            </td>
+                            <td>
+                                @line.Quantity
+                            </td>
+                            <td>
+                                @line.Item.Quantity
+                            </td>
+                            <td>
+                                <input id="quantityFor@(line.ItemID)" type="number" value="@(line.Quantity <= line.Item.Quantity ? line.Quantity : "")" onchange="updateValue(@line.ItemID)"/>
+                            </td>
+                            <td>
+                                <input type="checkbox" checked="@line.IsRG" onclick="return false;" />
+                            </td>
+                            <td>
+                                <input type="checkbox" checked="@line.IsPAL" onclick="return false;" />
+                            </td>
+                            <td>
+                                <input type="checkbox" onclick="isAllProcessed()" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+            @if (Model?.SpecialRequests != "")
+            {
+
+                <div style="display: flex; flex-direction: column; width: 50%;">
+                    <span>Special Requests</span>
+                    <textarea readonly style="width: 100%; height: max-content; margin-bottom: 10px;">@(Model.SpecialRequests)</textarea>
+                    
+                </div>
+                <div style="display: flex; flex-direction: column; width: 50%;">
+                    <span>Request Point Cost</span>
+                    <input id="addPoints" type="number" value="@Model.AdditionalPointCost" min="0" style="width: 30%;" />
+                </div>
+            }
+        </div>
+
+        <div style="margin-left: 40%;">
+            <p>Points Available: @ViewBag.points</p>
+            <p>Total Cost: <span id="totalCost"></span></p>
+        </div>
+    </div>
+}
+
+
+<script>
+    window.onload = function() {
+        isAllProcessed()
+
+        transaction = @Html.Raw(Json.Serialize(Model))
+
+        points = 0
+        transaction.lineItems.forEach(line => {
+            points += line.quantity * line.item.pointCost
+        })
+        addPoints = transaction.additionalPointCost
+        points += transaction.additionalPointCost + addPoints
+        $("#totalCost").text(points)
+
+        const addPointsEl = $("#addPoints")
+
+        if(addPointsEl) {
+            addPointsEl.on("change", function() {
+                addPoints = $(this).val()
+                $("#totalCost").text((Number(points) + Number(addPoints)))
+            })
+        }
+    }
+
+    function updateValue(id) {
+
+        const quantityInput = $(`#quantityFor${id}`)
+        let newQuantity = Number(quantityInput.val())
+        
+
+        let line =  transaction.lineItems.find(x=>x.itemID === id)
+        points -= line.quantity * line.item.pointCost
+        points += newQuantity * line.item.pointCost
+        line.quantity = newQuantity
+        $("#totalCost").text((Number(points) + Number(addPoints)))
+    }
+
+    function isAllProcessed() {
+        const rows = $("#rows")
+        if(rows.children().toArray().every(function(row) {
+            return $(row).find("td").eq(8).find("input[type='checkbox']").prop("checked")
+        }))
+        {
+            //alert("Enabled")
+            $("#processBtn").on("click", function() { processRequest() })
+            $("#processBtn").css("background-color", "")
+        }
+        else {
+            $("#processBtn").off("click", function() { processRequest() })
+            $("#processBtn").css("background-color", "grey")
+        }
+    }
+
+    function processRequest() {
+        $.ajax({
+            url: "/staff/processRequest",
+            method: "POST",
+            contentType: "application/json",
+            data: generatePayload(),
+            success: function(res) {
+                if (res.email && res.email.trim() != "") {
+                    const email = encodeURIComponent(res.email)
+                    const subject = encodeURIComponent("Pantry Request Processed")
+                    const body = encodeURIComponent(res.body)
+                    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`
+                }
+
+                setTimeout(() => {
+                    window.location.replace("/staff/viewrequests")
+                }, 250)
+            },
+            error: function(res) {
+                alert(`Unable to process transaction: ${res.statusText}`)
+            }
+        })
+    }
+    function rejectRequest() {
+        $.ajax({
+            url: "/staff/rejectRequest",
+            method: "POST",
+            contentType: "application/json",
+            data: generatePayload(),
+            success: function(res) {
+                if (res.email && res.email.trim() != "") {
+                    const email = encodeURIComponent(res.email)
+                    const subject = encodeURIComponent("Pantry Request Processed")
+                    const body = encodeURIComponent(res.body)
+                    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`
+                }
+
+                setTimeout(() => {
+                    window.location.replace("/staff/viewrequests")
+                }, 250)
+            },
+            error: function(res) {
+                alert(`Unable to process transaction: ${res.statusText}`)
+            }
+        })
+    }
+
+    function generatePayload() {
+        const dictionary = {}
+        transaction.lineItems.forEach(line => {
+            dictionary[line.itemID] = line.quantity
+        })
+        const payload = {
+            transactionId: @Model.TransactionID,
+            items: dictionary,
+            additionalPoints: Number(addPoints)
+        }
+        
+        return JSON.stringify(payload)
+    }
+</script>

@@ -1,0 +1,82 @@
+﻿@model StaffSignIn
+
+<head>
+    <style>
+        .btn-custom-blue {
+            background-color: #242c5c;
+            border-color: #242c5c;
+            color: white;
+        }
+
+        .btn-custom-blue:hover {
+                background-color: #404fa5;
+                border-color: #404fa5;
+            color: white;
+        }
+
+        .btn-custom-green {
+            background-color: #349444;
+            border-color: #349444;
+            color: white;
+        }
+
+        .btn-custom-green:hover {
+                background-color: #287134;
+                border-color: #287134;
+            color: white;
+        }
+    </style>
+</head>
+
+<div class="text-center">
+    <div class="d-flex align-items-center">
+        <div class="container text-center">
+            <img src="/Images/logo.png" class="img-thumbnail img-fluid chaser-img" alt="Chaser Pantry" style="max-width: 350px;">
+            <p class="fs-5"><br />Welcome to the SCC Food Pantry!<br /> Please sign in.</p>
+        </div>
+    </div>
+</div>
+
+<form asp-action="Login" method="post">
+    <div class="container">
+        <div class="row justify-content-center align-items-center" style="height: 60vh;">
+            <div class="col-lg-4 p-4 border bg-light rounded">
+                <h1 class="text-center mb-4">Staff Login</h1>
+                @* Display validation errors *@
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                @* Display error message from ViewBag *@
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+                }
+
+                @*ID Field *@
+                <label for="id" class="form-label">School ID</label>
+                <input type="text" class="form-control mb-3" asp-for="UserID" placeholder="School ID" />
+
+                @* Password field *@
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control mb-3" asp-for="Password" placeholder="Password" />
+
+                @* Submit button *@
+                <div class="d-grid gap-2">
+                    <button class="btn btn-custom-blue" type="submit">Sign In</button>
+                    <a class="btn btn-custom-green" asp-controller="Login" asp-action="SignUp">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@* <div class="d-flex justify-content-center align-items-center vh-50">
+    <div class="d-grid gap-2">
+        <button id="nextButton" class="btn btn-custom-blue" type="button" style="width: 500px; margin-bottom: 100px">Next</button>
+    </div>
+</div> *@
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

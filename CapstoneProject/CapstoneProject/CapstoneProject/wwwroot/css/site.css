@@ -1,0 +1,93 @@
+html {
+    font-size: 14px;
+}
+
+/* regular font */
+@font-face {
+    font-family: 'brandon_reg';
+    src: url('../font/brandon_reg.otf') format('opentype');
+}
+
+/* bold font */
+@font-face {
+    font-family: 'brandon_bld';
+    src: url('../font/brandon_bld.otf') format('opentype');
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    font-family: 'Brandon Grotesque';
+}
+
+.img-thumbnail {
+    background-color: transparent; /* ensure the background is transparent */
+    border: none;
+    box-shadow: none;
+}
+
+.navbar-custom .navbar-nav .nav-link {
+    color: white !important;
+   
+}
+
+.nav-item .nav-link {
+    margin-right: 35px;
+    white-space: nowrap;
+    font-size: 18px;
+    padding-bottom: 1px; 
+    padding-top: 1px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* green footer style */
+.footer-green {
+    background-color: #349444;
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+/* blue footer style */
+.footer-blue {
+    background-color: #242c5c;
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+/* food pantry text style */
+.food-pantry-text {
+    font-size: 54px;
+    color: #349444;
+    font-family: 'brandon_bld';
+}
+
+/* chaser food pantry logo style */
+.chaser-img {
+    max-width: 75%;
+    height: auto;
+}
+
+/* the slogan */
+.slogan-text {
+    font-size: 1.25rem;
+    color: #242c5c;
+    padding: 1rem 0;
+}
+

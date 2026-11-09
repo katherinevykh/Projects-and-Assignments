@@ -1,0 +1,83 @@
+﻿@model StaffRegister
+
+<head>
+    <style>
+        .btn-custom-blue {
+            background-color: #242c5c;
+            border-color: #242c5c;
+            color: white;
+        }
+
+            .btn-custom-blue:hover {
+                background-color: #404fa5;
+                border-color: #404fa5;
+                color: white;
+            }
+
+        .btn-custom-green {
+            background-color: #349444;
+            border-color: #349444;
+            color: white;
+        }
+
+            .btn-custom-green:hover {
+                background-color: #287134;
+                border-color: #287134;
+                color: white;
+            }
+    </style>
+</head>
+
+<div class="text-center">
+    <div class="d-flex align-items-center">
+        <div class="container text-center">
+            <img src="/Images/logo.png" class="img-thumbnail img-fluid chaser-img" alt="Chaser Pantry" style="max-width: 225px;">
+        </div>
+    </div>
+</div>
+
+<form  method="post">
+    <div class="container">
+        <div class="row justify-content-center align-items-center" >
+            <div class="col-lg-4 p-4 border bg-light rounded">
+
+                <h1 class="text-center mb-4">Sign Up </h1>
+                @* Display validation errors *@
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                @* Display error message from ViewBag *@
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+                }
+
+                @*First Name Field *@
+                <label asp-for="FirstName" class="form-label">First Name</label>
+                <input asp-for="FirstName" class="form-control mb-3" placeholder="First Name" />
+
+                @*Last Name Field *@
+                <label asp-for="LastName" class="form-label">Last Name</label>
+                <input asp-for="LastName" class="form-control mb-3"  placeholder="Last Name" />
+
+                @*Email Field *@
+                <label asp-for="Email" class="form-label">School Email</label>
+                <input asp-for="Email" class="form-control mb-3"  placeholder="School Email" />
+
+                @*ID Field *@
+                <label asp-for="UserID" class="form-label">School ID</label>
+                <input asp-for="UserID" class="form-control mb-3" placeholder="School ID" />
+
+                @*Password Field*@
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" type="password" class="form-control mb-3" name="password" />
+
+                @*Buttons *@
+                <div class="d-grid gap-2">
+                    <button class="btn btn-custom-green" type="submit">Create</button>
+                    <a class="btn btn-custom-blue" asp-controller="Login" asp-action="Login">Cancel</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

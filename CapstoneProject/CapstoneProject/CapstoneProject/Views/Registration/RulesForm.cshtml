@@ -1,0 +1,59 @@
+﻿<head>
+    <style>
+        .btn-custom-blue {
+            background-color: #242c5c;
+            border-color: #242c5c;
+            color: white;
+        }
+
+            .btn-custom-blue:hover {
+                background-color: #349444;
+                border-color: #349444;
+                color: white;
+            }
+    </style>
+</head>
+
+<div class="container">
+    <div class="d-flex align-items-center">
+        <img src="/Images/logo.png" class="img-thumbnail d-inline me-4" alt="Chaser Logo" style="max-width: 300px;">
+    </div>
+    <div class="d-flex justify-content-center mb-5">
+        <h1>Rules: </h1>
+    </div>
+</div>
+<body>
+<div class="d-flex justify-content-center">
+    <ol style="list-style-position: inside; text-align: left; font-size: 1.2em;">
+        <li style="margin-bottom: 10px;">Have your <strong>SCCID</strong> available to view.</li>
+        <li style="margin-bottom: 10px;">Fill out the Pantry Release <strong>and</strong> Shopping form <strong><u>ENTIRELY</u></strong>.</li>
+        <li style="margin-bottom: 10px;">Use your SCC email <strong>NOT</strong> your personal email.</li>
+        <li style="margin-bottom: 10px;">When "shopping" please take for your household <strong>ONLY</strong>.</li>
+        <li style="margin-bottom: 10px;">Document <strong><u>ALL</u></strong> items that you take from the pantry.</li>
+        <li style="margin-bottom: 10px;">Snacks are <strong>LIMITED</strong> to 2 per day.</li>
+        <li style="margin-bottom: 10px;">Respect the privacy of others.</li>
+    </ol>
+</div>
+
+    <div class="d-flex justify-content-center align-items-center vh-50">
+        <div class="d-grid gap-2">
+            <button id="nextButton" class="btn btn-custom-blue" type="button" style="width: 500px; margin-bottom: 100px; margin-top: 25px">Next</button>
+    </div>
+    
+
+@*     <script>
+        // JavaScript to handle button click event
+        document.getElementById("nextButton").addEventListener("click", function () {
+            window.location.href = '@Url.Action("LiabilityForm", "Registration")';
+        });
+    </script> *@
+
+    <script>
+        // JavaScript to handle button click event
+        document.getElementById("nextButton").addEventListener("click", function () {
+            window.location.href = '@Url.Action("userApplicationForm", "Registration")';
+        });
+    </script>
+</body>
+</div>
+

@@ -1,0 +1,148 @@
+﻿@page
+@model CapstoneProject.Areas.Identity.Pages.Account.ManageUsersModel
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="min-vh-100 bg-light">
+    <!-- Main Content -->
+    <main class="container py-5">
+        <!-- Page Title and Actions -->
+        <div class="row mb-4 align-items-center">
+            <div class="col-md-8">
+                <h2 class="display-6 fw-bold text-dark">@ViewData["Title"]</h2>
+                <p class="text-muted">Manage user roles and permissions for the SCC Food Pantry system</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-success d-inline-flex align-items-center">
+                    <i class="bi bi-plus-circle me-2"></i> Add New User
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Assign Role Form -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h3 class="h5 fw-semibold mb-3 d-flex align-items-center">
+                            <i class="bi bi-person-plus text-success me-2"></i> Assign Role
+                        </h3>
+                        <form method="post" asp-page-handler="AssignRole">
+                            <div asp-validation-summary="ModelOnly" class="text-danger small mb-2"></div>
+                            <div class="mb-3">
+                                <label asp-for="Input.StudentId" class="form-label">Student ID</label>
+                                <input asp-for="Input.StudentId" class="form-control" placeholder="Enter Student ID" />
+                                <span asp-validation-for="Input.StudentId" class="text-danger small"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Input.Role" class="form-label">Role</label>
+                                <select asp-for="Input.Role" class="form-select">
+                                    <option value="">Select Role</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Student">Student</option>
+                                    <option value="Volunteer">Volunteer</option>
+                                </select>
+                                <span asp-validation-for="Input.Role" class="text-danger small"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-save me-2"></i> Assign Role
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User List -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="h5 fw-semibold mb-0 d-flex align-items-center">
+                                <i class="bi bi-people text-success me-2"></i> User Directory
+                            </h3>
+                            <form method="get" class="d-flex align-items-center">
+                                <input asp-for="SearchQuery" type="text" placeholder="Search users..." class="form-control form-control-sm me-2" style="max-width: 200px;" />
+                                <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th>Email</th>
+                                        <th>Roles</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var user in Model.Users)
+                                    {
+                                        <tr>
+                                            <td class="fw-medium">@user.StudentId</td>
+                                            <td>@user.Email</td>
+                                            <td>
+                                                @foreach (var role in user.Roles)
+                                                {
+                                                    <span class="badge rounded-pill
+                                                                        @(role == "Admin" ? "bg-primary" :
+                                                                                                                                                                              role == "Student" ? "bg-success" :
+                                                                                                                                                                              "bg-warning text-dark")">
+                                                @role
+                                            </span>
+                                                                                        }
+                                            </td>
+                                            <td>
+                                                <form method="post" asp-page-handler="Edit" class="d-inline">
+                                                    <input type="hidden" name="id" value="@user.Id" />
+                                                    <input type="text" name="email" value="@user.Email" class="form-control form-control-sm d-inline-block w-auto me-2" style="width: 180px;" />
+                                                    <button type="submit" class="btn btn-link text-primary p-0 me-2" title="Edit">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </button>
+                                                </form>
+                                                <form method="post" asp-page-handler="Delete" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                                    <input type="hidden" name="id" value="@user.Id" />
+                                                    <button type="submit" class="btn btn-link text-danger p-0" title="Delete">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination -->
+                        @{
+                            var totalPages = (int)Math.Ceiling((double)Model.TotalUsers / Model.PageSize);
+                            var prevPage = Model.PageIndex > 1 ? Model.PageIndex - 1 : 1;
+                            var nextPage = Model.PageIndex < totalPages ? Model.PageIndex + 1 : totalPages;
+                        }
+                        <nav class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="text-muted small">
+                                Showing <span class="fw-semibold">@((Model.PageIndex - 1) * Model.PageSize + 1)</span>
+                                to <span class="fw-semibold">@Math.Min(Model.PageIndex * Model.PageSize, Model.TotalUsers)</span>
+                                of <span class="fw-semibold">@Model.TotalUsers</span> users
+                            </div>
+                            <ul class="pagination mb-0">
+                                <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                                    <a class="page-link" asp-page="/Account/ManageUsers" asp-route-PageIndex="@prevPage" asp-route-SearchQuery="@Model.SearchQuery">Previous</a>
+                                </li>
+                                <li class="page-item @(Model.PageIndex == totalPages ? "disabled" : "")">
+                                    <a class="page-link" asp-page="/Account/ManageUsers" asp-route-PageIndex="@nextPage" asp-route-SearchQuery="@Model.SearchQuery">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

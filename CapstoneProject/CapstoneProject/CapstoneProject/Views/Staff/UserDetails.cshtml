@@ -1,0 +1,131 @@
+﻿@model CapstoneProject.Models.UserDetailsGetDTO
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="border p-3 mt-4" style="margin-bottom: 40px;">
+    <div class="row pb-2">
+        <h2 class="text-primary">User Details</h2>
+        <hr />
+        <hr />
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">Student ID</label>
+        <input readonly id="studentId" class="form-control" value="@Model.User.StudentId" />
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">First Name</label>
+        <input readonly id="firstName" class="form-control" value="@Model.User.FirstName" />
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">Last Name</label>
+        <input readonly readonly class="form-control" value="@Model.User.LastName" />
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">Registration Date</label>
+        <input readonly readonly class="form-control" value="@Model.User.RegistrationDate.ToShortDateString()" />
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">Email</label>
+        <input readonly class="form-control" value="@Model.User.Email" />
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">Phone Number</label>
+        <input readonly id="phoneNum" class="form-control" value="@Model.User.PhoneNum" />
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">Current Points</label>
+        <input id="points" class="form-control" type="number" value="@Model.User.Points" min="0" />
+        <span id="pointsWarning" class="text-danger"></span>
+    </div>
+    <div class="mb-3 row p-1">
+        <label class="p-0">Maximum Points</label>
+        <input id="maxPoints" class="form-control" type="number" value="@Model.User.MaxPoints" min="0" />
+        <span id="maxPointsWarning" class="text-danger"></span>
+    </div>
+    @if(User.IsInRole("Admin"))
+    {
+        <div class="mb-3 row p-1">
+            <p class="p-0">User Roles</p>
+            <div class="form-check">
+                <input id="isStaff" type="checkbox" checked="@Model.IsStaff" min="0" />
+                <label class="p-0">Staff</label>
+            </div>
+            <div class="form-check">
+                <input id="isAdmin" type="checkbox" checked="@Model.IsAdmin" min="0" />
+                <label class="p-0">Admin</label>
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-6 col-md-3">
+            <button id="submitBtn" type="submit" class="btn btn-primary form-control" onclick="postDetails()">Save</button>
+        </div>
+        <div class="col-6 col-md-3">
+            <a asp-controller="Staff" asp-action="FindUser" class="btn btn-secondary form-control">Back</a>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    async function postDetails() {
+        let studentId = $("#studentId").val();
+        let points = $("#points").val();
+        let maxPoints = $("#maxPoints").val();
+        let isStaff = $("#isStaff").prop("checked");
+        let isAdmin = $("#isAdmin").prop("checked");
+
+        let valid = true;
+        $("#pointsWarning").text("");
+        $("#maxPointsnWarning").text("");
+
+        if(!validatePoints(points)) {
+            $("#pointsWarning").text("Points must be a whole, positive number");
+            valid = false;
+        }
+        if(!validatePoints(points)) {
+            $("#maxPointsWarning").text("Max points must be a whole, positive number");
+            valid = false;
+        }
+        if(valid) {
+            let dto = {
+                UserId: studentId,
+                Points: points,
+                MaxPoints: maxPoints,
+                IsStaff: isStaff,
+                IsAdmin: isAdmin
+            }
+    
+
+            fetch("/Staff/SaveUser", {
+                method: "POST",
+                body: JSON.stringify(dto),
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                }
+                
+            })
+            .then(res => {
+                if(res.ok){
+                    alert("User details successfully saved")
+                    window.location.href = "/Staff/FindUser";
+                }
+                else {
+                    throw new Error(`Unable to save changes: ${res.status}`);
+                }
+            })
+            .catch(err => {
+                alert(err);
+            })
+        }
+    }
+
+    function validatePoints(points) {
+        return points && points >= 0 && points % 1 == 0;
+    }
+</script>

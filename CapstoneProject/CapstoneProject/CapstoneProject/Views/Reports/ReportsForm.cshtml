@@ -1,0 +1,106 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Reports Form";
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css">
+    <style>
+        .btn-custom-blue {
+            background-color: #242c5c;
+            border-color: #242c5c;
+            color: white;
+        }
+
+        .btn-custom-blue:hover {
+            background-color: #349444;
+            border-color: #349444;
+            color: white;
+        }
+    </style>
+</head>
+<div class="container">
+    <div class="d-flex align-items-center">
+        <img src="/Images/ChaserLogo.png" class="img-thumbnail d-inline me-4" alt="Chaser Logo">
+        <div>
+            <h3>SCC</h3>
+            <p>FOOD PANTRY</p>
+        </div>
+    </div>
+    <h1 class="text-end mb-5">REPORTS <span class="text-secondary">FORM</span></h1>
+
+<form method="post">
+    <div class="d-flex justify-content-center align-items-center vh-50">
+        <div class="row mb-4">
+            <div class="col-auto d-flex justify-content-start align-items-center">
+                <h2 style="color: black;" class="mb-0">Download report:</h2>
+            </div>
+                <label for="start">Start date:</label>
+                <input type="date" id="start" name="date-start" />
+
+                <label for="end">End date:</label>
+                <input type="date" id="end" name="date-end" />
+
+            <div class="col d-flex justify-content-start align-items-center">
+                <button id="reportsButton" class="btn btn-custom-blue" type="button" style="width: 500px;">Report</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    @section Scripts {
+        <script>
+            document.getElementById("reportsButton").addEventListener("click", function () {
+                // POST request
+                var startDate = $('#start').val();
+                var endDate = $('#end').val();
+                if (startDate == '' || endDate == '')
+                {
+                    window.alert('Please set both dates.')
+                    throw new Error('Please set both dates.')
+                }
+                if (Date.parse(startDate) > Date.parse(endDate))
+                {
+                    window.alert('End date must be the same day as, or later than, start date.');
+                    throw new Error('End date must be the same day as, or later than, start date.');
+                }
+                fetch('@Url.Action("CreateExcelFile", "Reports")', {
+                    method: 'POST',
+                    headers: {
+                       'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        start: startDate,
+                        end: endDate
+                    })
+                }).then(response => {
+                    // convert the response to a blob
+                    if (response.ok) {
+                        console.log(response);
+                        return response.blob();
+                    }
+                    throw new Error('Network response was not ok.');
+                }).then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    // temporary anchor element
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    const now = new Date();
+                    a.download = 'UserReport' + now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + '-' + now.getHours() + '-' + now.getMinutes() + '-' + now.getSeconds() + '.xlsx';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        </script>
+    }
+</form>

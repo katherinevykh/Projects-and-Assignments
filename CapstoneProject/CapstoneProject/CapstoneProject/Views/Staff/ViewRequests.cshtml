@@ -1,0 +1,71 @@
+﻿@using System.Text.Json
+@model List<Transaction>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<div>
+    <h1>Requests</h1>
+    <div class="container" style="overflow-y:scroll; height: 60vh;">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Student ID
+                    </th>
+                    <th>
+                        Request Date
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var transaction in Model)
+                {
+                    <tr style="@(transaction.IsProcessed ? "background-color: lightgreen;"  : "background-color: lightcoral;")">
+                        <td>
+                            @transaction.UserID
+                        </td>
+                        <td>
+                            @transaction.Date
+                        </td>
+                        <td>
+                            <span style="font-weight: bold">@(transaction.IsProcessed ? "Processed" : "Unproccessed")</span>
+                        </td>
+                        <td>
+                            <a class="btn btn-primary mx-2"  href="/staff/viewrequest?id=@transaction.TransactionID">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    
+    </div>
+    <div class="container" style="width: 100%; margin: 10px;">
+        <table style="width: 100%;">
+            <tr style="display: flex; justify-content: center;">
+                <td>
+                    <a class="btn btn-primary mx-2" asp-controller="staff" asp-action="viewrequests" asp-route-pg="0">First Page</a>
+                </td>
+                <td>
+                    <a class="btn btn-primary mx-2" asp-controller="staff" asp-action="viewrequests" asp-route-pg="@(ViewBag.pg > 0 ? ViewBag.pg - 1 : 0)">Previous Page</a>
+                </td>
+                <td>
+                    <a class="btn btn-primary mx-2" asp-controller="staff" asp-action="viewrequests" asp-route-pg="@(ViewBag.pg < ViewBag.pgMax ? ViewBag.pg + 1 : ViewBag.pgMax)">Next Page</a>
+                </td>
+                <td>
+                    <a class="btn btn-primary mx-2" asp-controller="staff" asp-action="viewrequests" asp-route-pg="@ViewBag.pgMax">Last Page</a>
+                </td>
+            </tr>
+        </table>
+        <span style="margin: 5px; display: flex; justify-self: center;">Page: @(ViewBag.pg + 1) / @(ViewBag.pgMax + 1)</span>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿<div class="container d-flex justify-content-center ">
+
+    <form method="post" asp-action="FindUser" class="col-md-6 mt-3">
+        <div class="mb-3 row p-2">
+            <label class="p-0" for="userId">Student ID</label>
+            <input name="userId" class="form-control" minLength="7" maxlength="7" required />
+        </div>
+        <div class="mb-3 row p-2">
+            <button type="submit" class=" btn btn-primary  form-control ">Find User</button>
+            @* Display error message from ViewBag *@
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+            }
+        </div>
+    </form>
+
+</div>

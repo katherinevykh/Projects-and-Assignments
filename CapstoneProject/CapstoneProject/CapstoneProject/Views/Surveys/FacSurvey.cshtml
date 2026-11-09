@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Needs Survey</title>
+    <style>
+        .green-text {
+            color: green;
+        }
+
+        .form-check-input:checked {
+            background-color: green;
+            border-color: green;
+        }
+
+        .form-check-input {
+            border-color: green;
+        }
+
+        .btn-primary {
+            background-color: green;
+            border-color: green;
+            color: white;
+        }
+
+            .btn-primary:hover {
+                background-color: darkgreen;
+                border-color: darkgreen;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex align-items-center">
+            <img src="/Images/logo.png" class="img-thumbnail d-inline me-4" alt="Chaser Logo" style="max-width: 300px; "/>
+        </div>
+        <h1 class="text-end">FACULTY <span class="green-text">NEEDS SURVEY</span></h1>
+        <h6 class="mb-5">
+            This survey is completely voluntary and anonymous.
+            Please take a few minutes to answer the following questions:
+        </h6>
+        <form>
+            <h5>Which of the following best describes you:</h5>
+            <div class="row mb-5">
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="description" id="faculty" value="faculty">
+                        <label class="form-check-label" for="faculty">
+                            Faculty
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="description" id="staff" value="staff">
+                        <label class="form-check-label" for="staff">
+                            Staff
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="description" id="admin" value="admin">
+                        <label class="form-check-label" for="admin">
+                            Administrator
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <h5>
+                Are you aware of a situation or have personal knowledge of any students at SCC who have an inadequate
+                supply of food?
+            </h5>
+            <div class="row mb-5">
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="answer" id="yes" value="yes">
+                        <label class="form-check-label" for="yes">
+                            Yes
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="answer" id="no" value="no">
+                        <label class="form-check-label" for="no">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <h5>How often would you estimate that the food supply for other students (not yourself) has been inadequate?</h5>
+            <div class="row mb-5">
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="response" id="no_prob" value="no_prob">
+                        <label class="form-check-label" for="no_prob">
+                            Not a problem
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="response" id="min_prob" value="min_prob">
+                        <label class="form-check-label" for="min_prob">
+                            Minor Problem
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="response" id="mod_prob" value="mod_prob">
+                        <label class="form-check-label" for="mod_prob">
+                            Moderate Problem
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="response" id="ser_prob" value="ser_prob">
+                        <label class="form-check-label" for="ser_prob">
+                            Serious Problem
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="response" id="dk" value="dk">
+                        <label class="form-check-label" for="dk">
+                            Don't Know
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <h5>
+                For a food pantry to operate efficiently, it would need a group of committed volunteers. Do
+                you advise a club or organization whose members would be willing to volunteer on occasion
+                at a food pantry?
+            </h5>
+            <div class="row mb-5">
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="answer2" id="yes2" value="yes">
+                        <label class="form-check-label" for="yes2">
+                            Yes
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="answer2" id="no2" value="no">
+                        <label class="form-check-label" for="no2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <h5>
+                The food pantry would need to raise start-up funds and would conduct food drives on occasion to stock
+                the pantry. Would you and/or the members of a club/organization you advise be willing to donate to the pantry?
+            </h5>
+            <div class="row mb-5">
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="answer3" id="yes3" value="yes">
+                        <label class="form-check-label" for="yes3">
+                            Yes
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="answer3" id="no3" value="no">
+                        <label class="form-check-label" for="no3">
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="answer3" id="maybe" value="maybe">
+                        <label class="form-check-label" for="maybe">
+                            Maybe
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <h5>
+                Would you be interested in volunteering in one or more of the following roles? (Check all that apply)
+            </h5>
+            <div class="row mb-5">
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="checkbox" name="role" id="donor" value="donor">
+                        <label class="form-check-label" for="donor">
+                            Donor
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="checkbox" name="role" id="commit_mem" value="commit_mem">
+                        <label class="form-check-label" for="commit_mem">
+                            Committee Member
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="checkbox" name="role" id="vol" value="vol">
+                        <label class="form-check-label" for="vol">
+                            Volunteer
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <h5>You believe that a student food pantry is needed at SCC:</h5>
+            <div class="row mb-5">
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="belief" id="s_agree" value="s_agree">
+                        <label class="form-check-label" for="s_agree">
+                            Strongly Agree
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="belief" id="agree" value="agree">
+                        <label class="form-check-label" for="agree">
+                            Agree
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="belief" id="disagree" value="disagree">
+                        <label class="form-check-label" for="disagree">
+                            Disagree
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-3 mb-2">
+                    <div class="form-check d-flex justify-content-center">
+                        <input class="form-check-input me-2" type="radio" name="belief" id="undecided" value="undecided">
+                        <label class="form-check-label" for="undecided">
+                            Undecided
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-12 text-center">
+                    <button type="submit" class="btn btn-primary">Submit Survey</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+
+

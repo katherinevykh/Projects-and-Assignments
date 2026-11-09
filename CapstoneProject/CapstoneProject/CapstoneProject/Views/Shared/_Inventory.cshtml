@@ -1,0 +1,47 @@
+﻿@model List<Item>
+<div class="col-6">
+    <h2 class="text-primary">Inventory</h2>
+</div>
+<div class="container" style="overflow-y:scroll; height: 40vh;">
+    <div class="row pt-4 pb-3"></div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            @* *@
+            <tr>
+                <th>UPC</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Point Cost</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>@obj.UUID</td>
+                    <td>@obj.Description</td>
+                    <td>@obj.ItemSubcategory?.Name</td>
+                    <td>@obj.Quantity</td>
+                    <td>@obj.PointCost</td> 
+                    <td>
+                        <div class="w-100 btn-group" role="group">
+                            <a asp-controller="Inventory" asp-action="Edit" asp-route-itemId="@obj.ItemID" class="btn btn-primary mx-2">
+                                <i class="bi bi-pencil-square"></i>Edit
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="w-100 btn-group" role="group">
+                            <a asp-controller="Inventory" asp-action="Delete" asp-route-itemId="@obj.ItemID" class="btn btn-danger mx-2">
+                                <i class="bi bi-trash"></i>Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
